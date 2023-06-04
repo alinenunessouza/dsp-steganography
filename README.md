@@ -6,7 +6,7 @@
 ````
 python3 -m venv env
 ````
-2. Active virtual environment
+2. Activate virtual environment
     - Linux / macOS
     ````
     source env/bin/activate
@@ -21,7 +21,7 @@ pip install -r requirements.txt
 ````
 
 #### Add new packages to `requirements.txt`
-1. Install the package in to local environment
+1. Install the package into the local environment
 ```
 pip install <PACKAGE>
 ```
