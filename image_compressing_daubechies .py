@@ -1,3 +1,5 @@
+'''compressão de imagem -> reduzir o tamanho do arquivo de imagem, tornando-o mais leve e ocupando menos espaço de armazenamento'''
+
 import pywt
 import numpy as np
 import cv2
