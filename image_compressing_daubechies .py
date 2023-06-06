@@ -1,4 +1,11 @@
-'''compressão de imagem -> reduzir o tamanho do arquivo de imagem, tornando-o mais leve e ocupando menos espaço de armazenamento'''
+'''
+
+compressão de imagem -> reduzir o tamanho do arquivo de imagem, tornando-o mais leve e ocupando menos espaço de armazenamento
+
+- Three layer decomposition (the higher the level of decomposition, the more difficult it is to visualize on a computer screen, but the easier it is to compress)
+
+- Mother wavelet: daubechies
+'''
 
 import pywt
 import numpy as np
