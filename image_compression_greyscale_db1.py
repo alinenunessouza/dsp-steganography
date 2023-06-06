@@ -1,4 +1,12 @@
-'''Realiza a decomposição wavelet de uma imagem em escala de cinza em níveis múltiplos e exibe o resultado da decomposição como uma imagem
+''' 
+Image compression using the discrete wavelet transform
+https://www.youtube.com/watch?v=eJLF9HeZA8I&t=18s
+
+- Realiza a decomposição wavelet de uma imagem em escala de cinza em níveis múltiplos e exibe o resultado da decomposição como uma imagem
+
+- Wavelet Decomposition of a Two-Dimensional array
+
+- Mother wavelet: db1
 
 biblioteca PyWavelets (pywt) -> realiza a decomposição 
 biblioteca Matplotlib -> exibe a imagem resultante
