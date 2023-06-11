@@ -1,3 +1,7 @@
+'''
+This version has noise in the output
+'''
+
 import numpy as np
 import pywt
 from PIL import Image
