@@ -75,9 +75,6 @@ def extract_data(image_path):
 
     return extracted_data
 
-
-
-
 # Embedding data into the cover image
 image_path = 'image_test_low_resolution.png'
 data_to_embed = b'\x01\x02\x03\x04\x05'  # Example binary data
