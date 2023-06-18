@@ -15,7 +15,7 @@ to_send_og = cv2.cvtColor(to_send_og, cv2.COLOR_BGR2RGB)
 ###
 dimh, dimw, dimch = to_send_og.shape
 
-# 2) seperating chanels (colors) for cover and hidden images
+# 2) seperating channels (colors) for cover and hidden images
 to_send_r = to_send_og[:, :, 0]
 to_send_g = to_send_og[:, :, 1]
 to_send_b = to_send_og[:, :, 2]
@@ -94,7 +94,7 @@ b = wimgg.astype(int) # green matrix
 c = wimgb.astype(int) # blue matrix
 
 # 7) merge reconstructed svd, this is using approximate values hence dimension/2
-wimg = cv2.merge((a, b, c)) # image matrix, 3 channels
+wimg = cv2.merge((a, b, c))
 h, w, ch = wimg.shape
 
 # 8) rgb coeffs for idwt, so that you can recreate a original img but with cA now having hidden info
@@ -104,7 +104,7 @@ proc_g = wimg[:, :, 1], (cHg, cVg, cDg)
 proc_b = wimg[:, :, 2], (cHb, cVb, cDb)
 
 # 3 stego images
-# performs the inverse of the discrete wavelet transform in each color channel (red, green and blue) of the processed image
+# 9) performs the inverse of the discrete wavelet transform in each color channel (red, green and blue) of the processed image
 # wavelet encoding -> parameter that indicates which waveform (wavelet) was used for the initial wavelet transform
 processed_rgbr = pywt.idwt2(proc_r, encoding_wavelet)
 processed_rgbg = pywt.idwt2(proc_g, encoding_wavelet)
@@ -126,7 +126,7 @@ fig1.add_axes(ax1)
 ax1.imshow(wimghd, aspect="auto")
 fig1.savefig("stego.jpg")
 
-# 9) applying dwt to 3 stego channel images to get coeffs of stego image in R,G,B
+# 10) applying dwt to 3 stego channel images to get coeffs of stego image in R,G,B
 
 Psend_r = pywt.dwt2(processed_rgbr, decoding_wavelet)
 PcAr, (PcHr, PcVr, PcDr) = Psend_r
@@ -137,33 +137,33 @@ PcAg, (PcHg, PcVg, PcDg) = Psend_g
 Psend_b = pywt.dwt2(processed_rgbb, decoding_wavelet)
 PcAb, (PcHb, PcVb, PcDb) = Psend_b
 
-# 10) again do svd to decompose the approximate value PcAr
+# 11) again do svd to decompose the approximate value PcAr
 PPr, PDr, PQr = np.linalg.svd(PcAr, full_matrices=False)
 PPg, PDg, PQg = np.linalg.svd(PcAg, full_matrices=False)
 PPb, PDb, PQb = np.linalg.svd(PcAb, full_matrices=False)
 
-# 11) subtract from R,G,B channels values of cover image
+# 12) subtract from R,G,B channels values of cover image
 S_ewatr = (PDr - Dr) / 0.10
 S_ewatg = (PDg - Dg) / 0.10
 S_ewatb = (PDb - Db) / 0.10
 
-# 12) merging -> merge  new approximations with hidden SVD found earlier
+# 13) merging -> merge new approximations with hidden SVD found earlier
 ewatr = np.dot(P1r * S_ewatr, Q1r)
 ewatg = np.dot(P1g * S_ewatg, Q1g)
 ewatb = np.dot(P1b * S_ewatb, Q1b)
 
-# 13) merge recreate hidden image -still  based on approximations ,hence dim /2
+# 14) merge recreate hidden image - still  based on approximations, hence dim /2
 d = ewatr.astype(int)
 e = ewatg.astype(int)
 f = ewatb.astype(int)
 eimg = cv2.merge((d, e, f))
 
-# 14) coeffs of original hidden image except the new derived appproximation
+# 15) coeffs of original hidden image except the new derived appproximation
 eproc_r = eimg[:, :, 0], (cHr1, cVr1, cDr1)
 eproc_g = eimg[:, :, 1], (cHg1, cVg1, cDg1)
 eproc_b = eimg[:, :, 2], (cHb1, cVb1, cDb1)
 
-# 15) hidden stego images get high res r,g,b seperate images/channels usign idwt
+# 16) hidden stego images get high res r,g,b seperate images/channels usign idwt
 eprocessed_rgbr = pywt.idwt2(eproc_r, decoding_wavelet)
 eprocessed_rgbg = pywt.idwt2(eproc_g, decoding_wavelet)
 eprocessed_rgbb = pywt.idwt2(eproc_b, decoding_wavelet)
@@ -176,7 +176,8 @@ y1 = eprocessed_rgbg.astype(int)
 
 z1 = eprocessed_rgbb.astype(int)
 
-# 16) combine different high res r,g,b to get hidden image //figure 9 is final output.
+# 17) combine different high res r,g,b to get hidden image 
+# figure 9 is final output
 hidden_rgb = cv2.merge((x1, y1, z1))
 
 h1, w1, ch1 = hidden_rgb.shape
