@@ -6,12 +6,27 @@ import cv2
 encoding_wavelet = "db8"
 decoding_wavelet = "db8"
 
+plot_rows = 4
+plot_columns = 4
+
 # 1) reading files and converting to rgb
 to_hide_og = cv2.imread("to_hide.jpg")
 to_hide_og = cv2.cvtColor(to_hide_og, cv2.COLOR_BGR2RGB)
 
 to_send_og = cv2.imread("to_send.jpg")
 to_send_og = cv2.cvtColor(to_send_og, cv2.COLOR_BGR2RGB)
+
+# plot cover and image that will be hidden
+plt.subplot(plot_rows, plot_columns, 2)
+plt.axis('off')
+plt.title("Cover Image")
+plt.imshow(to_send_og, aspect="equal")
+
+plt.subplot(plot_rows, plot_columns, 3)
+plt.axis('off')
+plt.title("Image to hide")
+plt.imshow(to_hide_og, aspect="equal")
+
 ###
 dimh, dimw, dimch = to_send_og.shape
 
@@ -39,23 +54,20 @@ cAg1, (cHg1, cVg1, cDg1) = hide_g
 hide_b = pywt.dwt2(to_hide_b, encoding_wavelet)
 cAb1, (cHb1, cVb1, cDb1) = hide_b
 
-send_wavelet_result = plt.figure(figsize=(12, 3))
+# plot all layers resulted from DWT
+dwt_labels = ["Approximation", "Horizontal Detail", "Vertical Detail", "Diagonal Detail"]
 for i, a in enumerate([cAr, cHr, cVr, cDr]):
-    ax = send_wavelet_result.add_subplot(1, 4, i + 1)
-    ax.imshow(a, interpolation="nearest", cmap=plt.cm.gray)
-    ax.set_xticks([])
-    ax.set_yticks([])
+    plt.subplot(plot_rows, plot_columns, 5 + i)
+    plt.title(dwt_labels[i])
+    plt.axis('off')
+    plt.imshow(a, interpolation="nearest", cmap=plt.cm.gray)
 
-send_wavelet_result.tight_layout()
-
-hide_wavelet_result = plt.figure(figsize=(12, 3))
 for i, a in enumerate([cAr1, cHr1, cVr1, cDr1]):
-    ax = hide_wavelet_result.add_subplot(1, 4, i + 1)
-    ax.imshow(a, interpolation="nearest", cmap=plt.cm.gray)
-    ax.set_xticks([])
-    ax.set_yticks([])
+    plt.subplot(plot_rows, plot_columns, 9 + i)
+    plt.title(dwt_labels[i])
+    plt.axis('off')
+    plt.imshow(a, interpolation="nearest", cmap=plt.cm.gray)
 
-hide_wavelet_result.tight_layout()
 
 print(cAr.shape)
 
@@ -118,13 +130,12 @@ wimghd = cv2.merge(
 )
 
 h, w, ch = wimghd.shape
-fig1 = plt.figure(frameon=False)
-fig1.set_size_inches(float(w) / 100, float(h) / 100)
-ax1 = plt.Axes(fig1, [0.0, 0.0, 1.0, 1.0])
-ax1.set_axis_off()
-fig1.add_axes(ax1)
-ax1.imshow(wimghd, aspect="auto")
-fig1.savefig("stego.jpg")
+
+# plot stego image
+plt.subplot(plot_rows, plot_columns, 14)
+plt.axis('off')
+plt.title("Stego Image")
+plt.imshow(wimghd, aspect="equal")
 
 # 10) applying dwt to 3 stego channel images to get coeffs of stego image in R,G,B
 
@@ -182,12 +193,29 @@ hidden_rgb = cv2.merge((x1, y1, z1))
 
 h1, w1, ch1 = hidden_rgb.shape
 
-fig = plt.figure(frameon=False)
-fig.set_size_inches(7.20, 4.80)
-ax = plt.Axes(fig, [0.0, 0.0, 1.0, 1.0])
-ax.set_axis_off()
-fig.add_axes(ax)
-ax.imshow(hidden_rgb, aspect="auto")
-fig.savefig("hidden_rgb.jpg")
+plt.subplot(plot_rows, plot_columns, 15)
+plt.axis('off')
+plt.title("Decoded Hidden Image")
+plt.imshow(hidden_rgb, aspect="equal")
 
 plt.show()
+plt.close()
+
+# save stego image to filesystem
+fig1 = plt.figure(frameon=False)
+fig1.set_size_inches(float(w) / 100, float(h) / 100)
+ax1 = plt.Axes(fig1, [0.0, 0.0, 1.0, 1.0])
+ax1.set_axis_off()
+fig1.add_axes(ax1)
+ax1.imshow(wimghd, aspect="auto")
+fig1.savefig("stego.jpg")
+
+# save decoded hidden image to filesystem
+fig2 = plt.figure(frameon=False)
+fig2.set_size_inches(7.20, 4.80)
+ax = plt.Axes(fig2, [0.0, 0.0, 1.0, 1.0])
+ax.set_axis_off()
+fig2.add_axes(ax)
+ax.imshow(hidden_rgb, aspect="auto")
+fig2.savefig("hidden_rgb.jpg")
+
