@@ -27,7 +27,11 @@ plt.axis('off')
 plt.title("Image to hide")
 plt.imshow(to_hide_og, aspect="equal")
 
-###
+# --------------------------------------------
+# Encoding Process
+#---------------------------------------------
+
+
 dimh, dimw, dimch = to_send_og.shape
 
 # 2) seperating channels (colors) for cover and hidden images
@@ -136,6 +140,10 @@ plt.subplot(plot_rows, plot_columns, 14)
 plt.axis('off')
 plt.title("Stego Image")
 plt.imshow(wimghd, aspect="equal")
+
+# --------------------------------------------
+# Decoding Process
+#---------------------------------------------
 
 # 10) applying dwt to 3 stego channel images to get coeffs of stego image in R,G,B
 
