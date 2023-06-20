@@ -72,13 +72,13 @@ to_hide_g = to_hide_og[:, :, 1]
 to_hide_b = to_hide_og[:, :, 2]
 
 # 4) Apply the wavelet transform to the cover and hidden images
-send_r, cHr, cVr, cDr = dwt_coefficients(to_send_r, encoding_wavelet)
-send_g, cHg, cVg, cDg = dwt_coefficients(to_send_g, encoding_wavelet)
-send_b, cHb, cVb, cDb = dwt_coefficients(to_send_b, encoding_wavelet)
+cAr, cHr, cVr, cDr = dwt_coefficients(to_send_r, encoding_wavelet)
+cAg, cHg, cVg, cDg = dwt_coefficients(to_send_g, encoding_wavelet)
+cAb, cHb, cVb, cDb = dwt_coefficients(to_send_b, encoding_wavelet)
 
-hide_r, cHr1, cVr1, cDr1 = dwt_coefficients(to_hide_r, encoding_wavelet)
-hide_g, cHg1, cVg1, cDg1 = dwt_coefficients(to_hide_g, encoding_wavelet)
-hide_b, cHb1, cVb1, cDb1 = dwt_coefficients(to_hide_b, encoding_wavelet)
+cAr1, cHr1, cVr1, cDr1 = dwt_coefficients(to_hide_r, encoding_wavelet)
+cAg1, cHg1, cVg1, cDg1 = dwt_coefficients(to_hide_g, encoding_wavelet)
+cAb1, cHb1, cVb1, cDb1 = dwt_coefficients(to_hide_b, encoding_wavelet)
 
 # plot all layers resulted from DWT
 dwt_labels = ["Approximation", "Horizontal Detail", "Vertical Detail", "Diagonal Detail"]
