@@ -42,7 +42,7 @@ def save_image_to_file(image, filepath, figsize=None):
     ax.imshow(image, aspect="auto")
     fig.savefig(filepath)
 
-encoding_wavelet = "db8"
+encoding_wavelet = "db8" # indicates which waveform (wavelet) was used for the wavelet transform
 decoding_wavelet = "db8"
 
 plot_rows = 4
@@ -101,17 +101,12 @@ P1b, D1b, Q1b = svd_decomposition(cAb1)
 print(Pr.shape, Dr.shape, Qr.shape)  # just for debugging
 
 # 6) Embed the hidden information into the 'D' parameters of the cover image
-# watermarking R,G,B channels using approximate values IE cA
-# add hidden and cover
-# merge original and cover parameters (svd)
 
 S_wimgr = Dr + (0.10 * D1r)
 S_wimgg = Dg + (0.10 * D1g)
 S_wimgb = Db + (0.10 * D1b)
 
 # 7) Reconstruct the coefficient matrix from the embedded SVD parameters
-# merging - get new values (R,G,B) using Pr S_wimgr and Qr --> basically reconstruct the SVD
-# svd parameters into matrix coefficients
 
 wimgr = np.dot(Pr * S_wimgr, Qr)
 
@@ -125,7 +120,6 @@ b = wimgg.astype(int) # green matrix
 c = wimgb.astype(int) # blue matrix
 
 # 8) Concatenate the three reconstructed RGB channels into a single matrix
-# merge reconstructed svd, this is using approximate values hence dimension/2
 wimg = cv2.merge((a, b, c))
 h, w, ch = wimg.shape
 
@@ -137,8 +131,6 @@ proc_g = wimg[:, :, 1], (cHg, cVg, cDg)
 proc_b = wimg[:, :, 2], (cHb, cVb, cDb)
 
 # 10) Apply inverse transform to each channel of the processed image, generating the stego image
-# performs the inverse of the discrete wavelet transform in each color channel (red, green and blue) of the processed image
-# wavelet encoding -> parameter that indicates which waveform (wavelet) was used for the initial wavelet transform
 processed_rgbr = pywt.idwt2(proc_r, encoding_wavelet)
 processed_rgbg = pywt.idwt2(proc_g, encoding_wavelet)
 processed_rgbb = pywt.idwt2(proc_b, encoding_wavelet)
@@ -176,7 +168,6 @@ Psend_b = pywt.dwt2(processed_rgbb, decoding_wavelet)
 PcAb, (PcHb, PcVb, PcDb) = Psend_b
 
 # 12) Perform Singular Value Decomposition (SVD) on the stego image
-# again do svd to decompose the approximate value PcAr
 PPr, PDr, PQr = np.linalg.svd(PcAr, full_matrices=False)
 PPg, PDg, PQg = np.linalg.svd(PcAg, full_matrices=False)
 PPb, PDb, PQb = np.linalg.svd(PcAb, full_matrices=False)
@@ -188,13 +179,11 @@ S_ewatg = (PDg - Dg) / 0.10
 S_ewatb = (PDb - Db) / 0.10
 
 # 14) Combine the approximations with the hidden SVD values to reconstruct the hidden image
-# merge new approximations with hidden SVD found earlier
 ewatr = np.dot(P1r * S_ewatr, Q1r)
 ewatg = np.dot(P1g * S_ewatg, Q1g)
 ewatb = np.dot(P1b * S_ewatb, Q1b)
 
 # 15) Obtain the reconstructed hidden image, which consists of the color channels combined with the normalized SVD differences
-# merge recreate hidden image - still  based on approximations, hence dim /2
 d = ewatr.astype(int)
 e = ewatg.astype(int)
 f = ewatb.astype(int)
