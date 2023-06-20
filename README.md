@@ -1,26 +1,27 @@
 ### DSP - Steganography with Python
 
-Processo de esconder a imagem dentro de outra imagem:
+#### Process of hiding an image within another image:
 
-1) Ler os arquivos e convertê-los para o formato RGB
-2) Separar os canais (cores) para a imagem de capa (cover) e a imagem oculta (hidden)
-3) Aplicar a transformada wavelet na cover e hidden image
-4) Realizar a decomposição em valores singulares (SVD) da cover e hidden image
-5) Incorporar a informação oculta nos parâmetros 'D' da cover image
-6) Reconstruir a matriz de coeficientes a partir dos parâmetros SVD incorporados
-7) Concatenar os três canais RGB reconstruídos em uma única matriz
-8) Extrair os coeficientes horizontais, verticais e diagonais de cada canal (RGB) da imagem
-9) Aplicar a transformada inversa em cada canal da imagem processada gerando a imagem esteganografada (stego image)
+1) Read the files (cover and hidden image).
+2) Convert the files to the RGB format.
+3) Separate the channels (colors) for the cover image and the hidden image.
+4) Apply the wavelet transform to the cover and hidden images.
+5) Perform Singular Value Decomposition (SVD) on the cover and hidden images.
+6) Embed the hidden information into the 'D' parameters of the cover image.
+7) Reconstruct the coefficient matrix from the embedded SVD parameters.
+8) Concatenate the three reconstructed RGB channels into a single matrix.
+9) Extract the horizontal, vertical, and diagonal coefficients from each RGB channel of the image.
+10) Apply inverse transform to each channel of the processed image, generating the stego image.
 
-Processo de reverter a estenografia:
+#### Steganography reversal process::
 
-10) Aplicar a transformada decodificadora em cada canal da imagem esteganografada (stego image)
-11) Realizar a decomposição em valores singulares (SVD) da imagem esteganografada
-12) Reverter as informações incluídas no parametro 'D' da cover image na etapa 5 através da operação inversa
-13) Recombinar as aproximações com os valores SVD ocultos para reconstruir a imagem oculta
-14) Obter a hidden image reconstruída, que consiste nos canais de cor combinados com as diferenças normalizadas do SVD 
-15) Extrair os coeficientes horizontais, verticais e diagonais de cada canal (RGB) da hidden image
-16) Aplicar a transformada inversa em cada canal da imagem para gerar a imagem final da informação oculta
+11) Apply the decoding transform to each channel of the stego image.
+12) Perform Singular Value Decomposition (SVD) on the stego image.
+13) Reverse the information embedded in the 'D' parameter of the cover image in step 5 through the inverse operation.
+14) Combine the approximations with the hidden SVD values to reconstruct the hidden image.
+15) Obtain the reconstructed hidden image, which consists of the color channels combined with the normalized SVD differences.
+16) Extract the horizontal, vertical, and diagonal coefficients from each RGB channel of the hidden image.
+17) Apply inverse transform to each channel of the image to generate the final hidden information image.
 
 #### Project Setup
 
