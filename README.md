@@ -1,6 +1,10 @@
 ### DSP - Steganography with Python
 
+---------------
+
 #### Process of hiding an image within another image:
+
+![image](docs/dsp_fruxograma_estenografia_drawio.png)
 
 1) Read the files (cover and hidden image).
 2) Convert the files to the RGB format.
@@ -15,6 +19,8 @@
 
 #### Steganography reversal process::
 
+![image](docs/dsp_fruxograma_decodificacao_estenografia_drawio.png)
+
 11) Apply the decoding transform to each channel of the stego image.
 12) Perform Singular Value Decomposition (SVD) on the stego image.
 13) Reverse the information embedded in the 'D' parameter of the cover image in step 5 through the inverse operation.
@@ -22,6 +28,10 @@
 15) Obtain the reconstructed hidden image, which consists of the color channels combined with the normalized SVD differences.
 16) Extract the horizontal, vertical, and diagonal coefficients from each RGB channel of the hidden image.
 17) Apply inverse transform to each channel of the image to generate the final hidden information image.
+
+#### For more details, please refer to our [Wiki](https://github.com/alinenunessouza/dsp-steganography/wiki)!
+
+---------------
 
 #### Project Setup
 
