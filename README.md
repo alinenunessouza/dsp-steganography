@@ -1,4 +1,4 @@
-### DSP - Steganography with Python
+### Wavelet Transform Based Image Steganography
 
 ---------------
 
